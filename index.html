@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript: Vetores e DOM</title>
+<style>
+:root{--bg:#f4f7f6;--paper:#fff;--ink:#17272b;--mut:#617177;--line:#dfe6e7;--teal:#0f766e;--soft:#e9f5f3;--code:#0b1720;--codeInk:#e7f0f2;--gold:#a16207}
+*{box-sizing:border-box}html,body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}body{overflow:hidden}
+.slide{position:absolute;inset:0;display:none;overflow:auto;padding:5vh 7vw 82px;background:radial-gradient(circle at 94% 5%,#e8f5f2,transparent 25%),linear-gradient(#fff,#f8faf9)}.slide.on{display:flex;flex-direction:column}.hero{justify-content:center}
+.top{display:flex;justify-content:space-between;gap:20px}.eyebrow{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);font-weight:800}.num{font-size:13px;font-weight:800;color:#9aa6aa}h1,h2{font-family:Georgia,serif;line-height:1.06;margin:.15em 0}h1{font-size:clamp(44px,7vw,82px);max-width:1050px}h2{font-size:clamp(32px,4.5vw,58px)}h3{margin:4px 0 10px}p{font-size:clamp(16px,1.5vw,21px);line-height:1.5;color:#34474d}.lead{font-size:clamp(20px,2vw,28px);max-width:1050px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 7px 22px #17333a0d}.card p,.card li{font-size:16px;line-height:1.45}.card li{margin:7px 0}pre{margin:0;background:var(--code);color:var(--codeInk);border-radius:13px;padding:17px;overflow:auto;font:14px/1.5 Consolas,"Courier New",monospace;white-space:pre-wrap}.callout{margin-top:18px;border-left:5px solid var(--teal);background:var(--soft);padding:15px 18px;border-radius:0 12px 12px 0;font-size:16px;line-height:1.5}.callout.gold{border-color:var(--gold);background:#fff8e9}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.chips span{background:#fff;border:1px solid var(--line);padding:9px 13px;border-radius:999px;font-weight:700}.bar{position:fixed;bottom:0;left:0;height:5px;background:var(--teal)}.controls{position:fixed;z-index:10;right:18px;bottom:14px;background:#ffffffed;border:1px solid var(--line);border-radius:99px;padding:7px;box-shadow:0 10px 30px #17333a20}.controls button{border:0;background:#edf3f2;width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer}.controls span{display:inline-block;width:66px;text-align:center;font-size:12px;font-weight:800;color:#65757a}.exercise{border-top:4px solid var(--teal)}.exercise b{color:var(--teal)}
+@media(max-width:850px){body{overflow:auto}.slide{position:relative;min-height:100vh}.grid,.grid.three{grid-template-columns:1fr}.controls{right:10px;bottom:10px}pre{white-space:pre}}
+@media print{body{overflow:visible}.controls{display:none}.slide{display:flex!important;position:relative;min-height:100vh;page-break-after:always}}
+</style>
+</head>
+<body>
+<section class="slide on hero"><div class="eyebrow">Programação para Web · 2026/02 · IFPI</div><h1>Vetores em JavaScript</h1><p class="lead">Guardar vários valores em uma variável e percorrer cada posição com estruturas de repetição.</p><div class="chips"><span>Array</span><span>Índice</span><span>for</span><span>querySelector</span><span>querySelectorAll</span></div><p>Conteúdo direto + exemplos + exercícios em ordem crescente.</p></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">01 · Conceito</div><h2>Um vetor guarda vários valores</h2></div><div class="num">02</div></div><div class="grid"><div class="card"><h3>Variáveis separadas</h3><pre>let nota1 = 8;
+let nota2 = 7;
+let nota3 = 9;</pre><p>Para muitos valores, repetir variáveis dá trabalho.</p></div><div class="card"><h3>Um vetor</h3><pre>let notas = [8, 7, 9];</pre><p>O array <code>notas</code> reúne os valores em uma sequência.</p></div></div><div class="callout">Em JavaScript, o vetor é criado com colchetes <code>[]</code>. Cada valor é um elemento.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">02 · Posições</div><h2>O índice começa em zero</h2></div><div class="num">03</div></div><div class="grid"><div class="card"><pre>let frutas = ["maçã", "uva", "pera"];
+
+frutas[0] // "maçã"
+frutas[1] // "uva"
+frutas[2] // "pera"
+frutas.length // 3</pre></div><div class="card"><h3>Posição e índice</h3><ul><li>Primeiro elemento: índice <code>0</code></li><li>Segundo elemento: índice <code>1</code></li><li>Último índice: <code>length - 1</code></li></ul></div></div><div class="callout gold">A posição humana 1 corresponde ao índice 0 no código.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">03 · Percorrer</div><h2>for visita cada posição</h2></div><div class="num">04</div></div><div class="grid"><div class="card"><h3>Exibir todos os elementos</h3><pre>let frutas = ["maçã", "uva", "pera"];
+
+for (let i = 0; i &lt; frutas.length; i++) {
+  console.log(frutas[i]);
+}</pre></div><div class="card"><h3>Como o laço avança</h3><p><code>i</code> vale 0, depois 1, depois 2.</p><p><code>frutas[i]</code> acessa o valor naquela posição.</p><p><code>i &lt; frutas.length</code> para ao chegar ao fim.</p></div></div><div class="callout">Use <code>i &lt; vetor.length</code> para percorrer qualquer tamanho de vetor.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">04 · Acumulador</div><h2>Somar os valores do vetor</h2></div><div class="num">05</div></div><div class="grid"><div class="card"><pre>let notas = [8, 7, 9];
+let soma = 0;
+
+for (let i = 0; i &lt; notas.length; i++) {
+  soma += notas[i];
+}
+
+let media = soma / notas.length;
+console.log(media); // 8</pre></div><div class="card"><h3>Ideia principal</h3><p>Comece com <code>soma = 0</code>.</p><p>Em cada volta, acrescente o valor atual.</p><p>Depois divida pela quantidade de elementos.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">05 · querySelector</div><h2>Um elemento: querySelector</h2></div><div class="num">06</div></div><p class="lead">Seleciona o primeiro elemento encontrado com o seletor CSS informado.</p><div class="grid"><div class="card"><h3>HTML</h3><pre>&lt;p class="mensagem"&gt;Olá!&lt;/p&gt;
+&lt;p class="mensagem"&gt;Bem-vindo!&lt;/p&gt;</pre></div><div class="card"><h3>JavaScript</h3><pre>let primeiro = document.querySelector(".mensagem");
+console.log(primeiro.textContent); // Olá!</pre></div></div><div class="callout"><code>querySelector()</code> retorna um elemento. Use <code>#id</code> para id, <code>.classe</code> para classe e o nome da tag.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">06 · querySelectorAll</div><h2>Vários elementos: querySelectorAll</h2></div><div class="num">07</div></div><div class="grid"><div class="card"><h3>HTML</h3><pre>&lt;p class="mensagem"&gt;Olá!&lt;/p&gt;
+&lt;p class="mensagem"&gt;Bem-vindo!&lt;/p&gt;
+&lt;p class="mensagem"&gt;Vamos programar.&lt;/p&gt;</pre></div><div class="card"><h3>JavaScript</h3><pre>let mensagens = document.querySelectorAll(".mensagem");
+
+for (let i = 0; i &lt; mensagens.length; i++) {
+  console.log(mensagens[i].textContent);
+}</pre></div></div><div class="callout">O resultado é uma coleção de elementos (NodeList). Percorra a coleção usando índice e <code>length</code>.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">07 · Comparação</div><h2>Do array aos elementos do DOM</h2></div><div class="num">08</div></div><div class="grid"><div class="card"><h3>Array criado no JavaScript</h3><pre>let cores = ["azul", "verde", "roxo"];
+for (let i = 0; i &lt; cores.length; i++) {
+  console.log(cores[i]);
+}</pre></div><div class="card"><h3>Elementos encontrados no HTML</h3><pre>let itens = document.querySelectorAll(".item");
+for (let i = 0; i &lt; itens.length; i++) {
+  console.log(itens[i].textContent);
+}</pre></div></div><div class="callout">Nos dois casos usamos uma coleção, <code>length</code>, índice e repetição. O array guarda dados; a NodeList reúne elementos da página.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">08 · Exemplo integrado</div><h2>Contar itens na página</h2></div><div class="num">09</div></div><div class="grid"><div class="card"><h3>HTML</h3><pre>&lt;ul&gt;
+  &lt;li class="item"&gt;Caderno&lt;/li&gt;
+  &lt;li class="item"&gt;Lápis&lt;/li&gt;
+  &lt;li class="item"&gt;Borracha&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p id="saida"&gt;&lt;/p&gt;</pre></div><div class="card"><h3>JavaScript</h3><pre>let itens = document.querySelectorAll(".item");
+let texto = "";
+
+for (let i = 0; i &lt; itens.length; i++) {
+  texto += (i + 1) + ". " + itens[i].textContent + " &lt;br&gt;";
+}
+
+document.querySelector("#saida").innerHTML = texto;</pre></div></div><div class="callout">O índice começa em 0; <code>i + 1</code> mostra uma numeração começando em 1 para a pessoa.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">09 · Exercícios básicos</div><h2>Comece praticando índices</h2></div><div class="num">10</div></div><div class="grid three"><div class="card exercise"><h3>1. Primeiro e último</h3><p>Crie um vetor com cinco nomes. Mostre o primeiro e o último valor.</p></div><div class="card exercise"><h3>2. Percorrer</h3><p>Crie um vetor com cinco frutas e mostre cada fruta com <code>for</code>.</p></div><div class="card exercise"><h3>3. Contar</h3><p>Mostre quantos elementos existem usando a propriedade <code>length</code>.</p></div></div><div class="callout">Teste os resultados com <code>console.log()</code> no console do navegador.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">10 · Exemplo resolvido</div><h2>Somar os elementos</h2></div><div class="num">11</div></div><div class="grid"><div class="card"><p>Some os valores de <code>[5, 8, 3, 4]</code>.</p><pre>let valores = [5, 8, 3, 4];
+let soma = 0;
+for (let i = 0; i &lt; valores.length; i++) {
+  soma = soma + valores[i];
+}
+console.log("Soma:", soma); // 20</pre></div><div class="card"><h3>Como funciona?</h3><p>O acumulador começa em zero. A cada volta, somamos o elemento da posição atual. Ao final, <code>soma</code> vale 20.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">11 · Exemplo resolvido</div><h2>Mostrar somente os pares</h2></div><div class="num">12</div></div><div class="grid"><div class="card"><pre>let numeros = [4, 7, 10, 3, 12];
+for (let i = 0; i &lt; numeros.length; i++) {
+  if (numeros[i] % 2 === 0) {
+    console.log(numeros[i]);
+  }
+}</pre></div><div class="card"><h3>Resultado</h3><pre>4
+10
+12</pre><p>O resto da divisão por 2 é zero nos números pares.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">12 · Exemplo resolvido</div><h2>Encontrar a maior nota</h2></div><div class="num">13</div></div><div class="grid"><div class="card"><pre>let notas = [6, 9, 7, 10, 8];
+let maior = notas[0];
+for (let i = 1; i &lt; notas.length; i++) {
+  if (notas[i] &gt; maior) {
+    maior = notas[i];
+  }
+}
+console.log("Maior nota:", maior); // 10</pre></div><div class="card"><h3>Estratégia</h3><p>Comece com o primeiro valor do vetor. Percorra os demais e atualize <code>maior</code> sempre que encontrar um valor superior.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">13 · Exemplo resolvido</div><h2>Percorrer elementos do HTML</h2></div><div class="num">14</div></div><div class="grid"><div class="card"><h3>HTML</h3><pre>&lt;p class="produto"&gt;Caderno&lt;/p&gt;
+&lt;p class="produto"&gt;Caneta&lt;/p&gt;
+&lt;p class="produto"&gt;Mochila&lt;/p&gt;</pre><h3>JavaScript</h3><pre>let produtos = document.querySelectorAll(".produto");
+for (let i = 0; i &lt; produtos.length; i++) {
+  console.log((i + 1) + ". " + produtos[i].textContent);
+}</pre></div><div class="card"><h3>Saída</h3><pre>1. Caderno
+2. Caneta
+3. Mochila</pre><p>A NodeList também permite acessar cada elemento pelo índice.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">14 · Pratique</div><h2>Lista de exercícios</h2></div><div class="num">15</div></div><div class="grid"><div class="card exercise"><h3>1. Estações</h3><p>Crie um vetor com quatro estações do ano. Mostre a segunda e a última.</p></div><div class="card exercise"><h3>2. Compras</h3><p>Percorra um vetor com cinco produtos e mostre cada produto em uma linha.</p></div><div class="card exercise"><h3>3. Temperaturas</h3><p>Calcule a média de um vetor com temperaturas da semana.</p></div><div class="card exercise"><h3>4. Contagem</h3><p>Conte quantos valores de um vetor numérico são maiores que 10.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">14 · Pratique</div><h2>Lista de exercícios · continuação</h2></div><div class="num">16</div></div><div class="grid"><div class="card exercise"><h3>5. Primeiro elemento</h3><p>Crie três parágrafos com classe <code>aviso</code>. Use <code>querySelector()</code> para mudar o texto do primeiro.</p></div><div class="card exercise"><h3>6. Destacar avisos</h3><p>Crie quatro parágrafos com classe <code>aviso</code>. Use <code>querySelectorAll()</code> e um laço para mudar a cor de todos.</p></div><div class="card exercise"><h3>7. Lista numerada</h3><p>Selecione os elementos <code>li</code> e mostre seus textos com numeração em uma área de resultado.</p></div><div class="card exercise"><h3>8. Notas da turma</h3><p>Use elementos com classe <code>nota</code>. Percorra-os, converta os textos em números e mostre média e maior nota.</p></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">15 · Vetores</div><h2>Adicionar valores com push()</h2></div><div class="num">17</div></div><p class="lead">O método <code>push()</code> coloca um novo elemento no final do vetor.</p><div class="grid"><div class="card"><h3>Exemplo resolvido</h3><pre>let nomes = [];
+let notas = [];
+
+nomes.push("Ana");
+notas.push(8);
+
+nomes.push("Bruno");
+notas.push(6.5);
+
+console.log(nomes); // ["Ana", "Bruno"]
+console.log(notas); // [8, 6.5]</pre></div><div class="card"><h3>Incluindo valores digitados</h3><pre>let nome = document.querySelector("#nome").value;
+let nota = Number(document.querySelector("#nota").value);
+
+nomes.push(nome);
+notas.push(nota);</pre><p>Leia o campo, converta a nota para número e use <code>push()</code> para guardar os dois valores.</p></div></div><div class="callout">Cada chamada de <code>push()</code> acrescenta um elemento ao final do vetor. Agora você pode começar os vetores vazios e preenchê-los conforme os dados são informados.</div></section><section class="slide"><div class="top"><div><div class="eyebrow">15 · Desafio</div><h2>Monte o resumo da turma</h2></div><div class="num">18</div></div><p class="lead">A interface está pronta. Faça os botões montarem um resumo das notas digitadas.</p><div class="grid"><div class="card"><div style="max-width:440px;margin:auto;background:#f8faf9;border:1px solid #dfe6e7;border-radius:16px;padding:20px;font-family:Arial,sans-serif"><h3 style="color:#0f766e;font-size:22px">Painel da turma</h3><label>Nome do aluno</label><input value="Ana" style="display:block;width:100%;padding:10px;margin:6px 0 12px;border:1px solid #cbd5d1;border-radius:7px"><label>Nota</label><input type="number" value="8" style="display:block;width:100%;padding:10px;margin:6px 0 12px;border:1px solid #cbd5d1;border-radius:7px"><button style="background:#0f766e;color:white;border:0;border-radius:7px;padding:10px">Adicionar nota</button> <button style="background:#315b7d;color:white;border:0;border-radius:7px;padding:10px">Ver resumo</button><div style="margin-top:16px;background:#e9f5f3;padding:13px;border-radius:8px"><b>Alunos cadastrados</b><p style="margin:8px 0">Ana — 8</p><p style="margin:8px 0">Bruno — 6.5</p><p style="margin:8px 0">Caio — 9</p><b>Média da turma: 7.8</b><br><span>Maior nota: 9 · Aprovados: 2</span></div></div></div><div class="card"><h3>O que precisa funcionar</h3><ul><li>Adicionar nome e nota informados à lista.</li><li>Exibir todos os alunos cadastrados.</li><li>Calcular a média, identificar a maior nota e contar aprovados (nota a partir de 7).</li><li>Limpar os dados para começar novamente.</li></ul></div></div><div class="callout">Prepare a página com HTML e CSS. Complete o JavaScript para que cada ação atualize os resultados exibidos.</div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">15 · Desafio</div><h2>Estrutura inicial da página</h2></div><div class="num">19</div></div><div class="grid"><div class="card"><h3>HTML</h3><pre>&lt;main class="painel"&gt;
+  &lt;h1&gt;Painel da turma&lt;/h1&gt;
+  &lt;label for="nomeAluno"&gt;Nome do aluno&lt;/label&gt;
+  &lt;input id="nomeAluno"&gt;
+  &lt;label for="notaAluno"&gt;Nota&lt;/label&gt;
+  &lt;input id="notaAluno" type="number" min="0" max="10" step="0.1"&gt;
+  &lt;button id="adicionar"&gt;Adicionar nota&lt;/button&gt;
+  &lt;button id="resumir"&gt;Ver resumo&lt;/button&gt;
+  &lt;button id="limpar"&gt;Limpar&lt;/button&gt;
+  &lt;ul id="listaAlunos"&gt;&lt;/ul&gt;
+  &lt;div id="resultado"&gt;&lt;/div&gt;
+&lt;/main&gt;</pre></div><div class="card"><h3>CSS</h3><pre>body { background:#f1f5f5; font-family:Arial; }
+.painel { max-width:520px; margin:35px auto; padding:25px;
+  background:white; border-radius:16px; box-shadow:0 8px 25px #0001; }
+label { display:block; margin-top:12px; }
+input { box-sizing:border-box; width:100%; padding:10px; margin:6px 0; }
+button { padding:10px 12px; margin:8px 4px 8px 0; border:0;
+  border-radius:7px; background:#0f766e; color:white; cursor:pointer; }
+#resultado { margin-top:14px; padding:14px; background:#e9f5f3; border-radius:8px; }</pre></div></div></section>
+<section class="slide"><div class="top"><div><div class="eyebrow">15 · Desafio</div><h2>Complete o JavaScript</h2></div><div class="num">20</div></div><div class="grid"><div class="card"><pre>let nomes = [];
+let notas = [];
+
+function adicionarAluno() {
+  // Leia os campos e inclua os dados.
+}
+
+function mostrarResumo() {
+  // Mostre a lista, a média, a maior nota
+  // e a quantidade de aprovados.
+}
+
+function limparLista() {
+  // Esvazie os dados e atualize a página.
+}
+
+// Conecte os botões às funções.</pre></div><div class="card"><h3>Confira o resultado</h3><p>Com Ana (8), Bruno (6,5) e Caio (9), o resumo mostra média 7,8, maior nota 9 e dois aprovados.</p><p>Depois de adicionar alguém, a lista e os cálculos consideram todos os registros. Ao limpar, a lista recomeça vazia.</p></div></div></section><div class="controls"><button id="prev" aria-label="Anterior">←</button><span id="count"></span><button id="next" aria-label="Próximo">→</button></div>
+<script>
+const slides = [...document.querySelectorAll(".slide")];
+let current = 0;
+function show(index) {
+  current = Math.max(0, Math.min(slides.length - 1, index));
+  slides.forEach((slide, i) => slide.classList.toggle("on", i === current));
+  document.querySelector("#count").textContent = `${current + 1} / ${slides.length}`;
+  document.querySelectorAll(".slide .bar").forEach(bar => bar.remove());
+  window.scrollTo(0, 0);
+}
+document.querySelector("#prev").addEventListener("click", () => show(current - 1));
+document.querySelector("#next").addEventListener("click", () => show(current + 1));
+document.addEventListener("keydown", event => {
+  if (["ArrowRight", "PageDown", " "].includes(event.key)) { event.preventDefault(); show(current + 1); }
+  if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); show(current - 1); }
+  if (event.key === "Home") show(0);
+  if (event.key === "End") show(slides.length - 1);
+});
+show(0);
+</script>
+</body>
+</html>
